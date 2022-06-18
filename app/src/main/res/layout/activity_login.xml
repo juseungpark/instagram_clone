@@ -34,7 +34,9 @@
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        //app:passwordToggleEnabled를 사용해 비밀번호를 보거나 끌 수 있게 했습니다.
         <com.google.android.material.textfield.TextInputLayout
+            app:passwordToggleEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
