@@ -17,7 +17,9 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
-
+        /*TextInputLayout은 EditText를 기반으로 좀 더 유연한 동작을 보여주는 레이아웃입니다. 
+        예를들어 아래의 EditText의 hint와 같이 쓸 경우 EditText를 클릭했을 때 힌트인 email이 사라지지 않고 글씨가 작아진 후 EditText위로 올라갑니다.
+        */
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
