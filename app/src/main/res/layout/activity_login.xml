@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:layout_width="match_parent"
@@ -32,7 +33,9 @@
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        //app:passwordToggleEnabled를 사용해 비밀번호를 보거나 끌 수 있게 했습니다.
         <com.google.android.material.textfield.TextInputLayout
+            app:passwordToggleEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -40,6 +43,7 @@
 
             <EditText
                 android:id="@+id/password_edittext"
+                android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password" />
@@ -66,7 +70,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="5dp"
 
-             />
+            />
 
         <Button
             android:id="@+id/google_sign_in_button"
