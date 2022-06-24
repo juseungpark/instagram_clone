@@ -9,6 +9,13 @@
         <entry key="..\:/androidLearn/app/src/main/res/drawable/push_icon.xml" value="0.2545" />
         <entry key="..\:/androidLearn/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/androidLearn/app/src/main/res/layout/activity_main.xml" value="0.21666666666666667" />
+        <entry key="..\:/instagram_clone/app/src/main/res/layout/activity_login.xml" value="0.17685185185185184" />
+        <entry key="..\:/instagram_clone/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/instagram_clone/app/src/main/res/layout/fragment_alarm.xml" value="0.25092592592592594" />
+        <entry key="..\:/instagram_clone/app/src/main/res/layout/fragment_detail.xml" value="0.25092592592592594" />
+        <entry key="..\:/instagram_clone/app/src/main/res/layout/fragment_grid.xml" value="0.25092592592592594" />
+        <entry key="..\:/instagram_clone/app/src/main/res/layout/fragment_user_xml.xml" value="0.25092592592592594" />
+        <entry key="..\:/instagram_clone/app/src/main/res/menu/bottom_navigation_main.xml" value="0.25092592592592594" />
       </map>
     </option>
   </component>

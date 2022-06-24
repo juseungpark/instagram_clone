@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.facebook.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -19,11 +20,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.juseung.instagram_clone.databinding.ActivityLoginBinding
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
+import com.google.firebase.auth.FacebookAuthProvider
+import java.util.*
+import javax.security.auth.callback.Callback
 
 class LoginActivity : AppCompatActivity() {
 
+    val callbackManager: CallbackManager = CallbackManager.Factory.create()
 
-    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    lateinit var googleactivityResultLauncher: ActivityResultLauncher<Intent>
+
+
 
     private lateinit var binding: ActivityLoginBinding
 
@@ -46,17 +56,25 @@ class LoginActivity : AppCompatActivity() {
             signinAndSignup()
         }
         binding.googleSignInButton.setOnClickListener {
-            activityResultLauncher.launch(googleSignInClient!!.signInIntent)
+            googleactivityResultLauncher.launch(googleSignInClient!!.signInIntent)
 
+        }
+        binding.facebookLoginButton.setOnClickListener {
+            LoginManager.getInstance().logInWithReadPermissions(
+                this,
+                callbackManager, //we added callback here according to new sdk 12.0.0 version of facebook
+                listOf("public_profile", "email")
+            )
         }
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken("463168803840-m3ahs1b27l5sjcphj7ltcc2cdan1h87a.apps.googleusercontent.com")
             .requestEmail()
             .build()
 
+
         googleSignInClient = GoogleSignIn.getClient(this,gso)
 
-        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        googleactivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             result: ActivityResult ->
             if (result.resultCode == RESULT_OK){
                 var task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
@@ -69,14 +87,34 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+        LoginManager.getInstance().registerCallback(callbackManager,
+            object : FacebookCallback<LoginResult?> {
+                override fun onSuccess(result: LoginResult?) {
+                    if (result?.accessToken != null) {
+                        val accessToken = result.accessToken.token
+                        firebaseAuthWithfacebook(result?.accessToken)
+                    }
+                }
+                override fun onCancel() {
+                }
+                override fun onError(error: FacebookException) {
+                }
+            })
 
     }
-
-
-
-
-
-
+    fun firebaseAuthWithfacebook(token : AccessToken?) {
+        var credential = FacebookAuthProvider.getCredential(token?.token!!)
+        auth?.signInWithCredential(credential)
+            ?.addOnCompleteListener {
+                    task ->
+                if(task.isSuccessful) {
+                    moveMainPage(task.result?.user)
+                } else {
+                    // Show the error message, 아이디와 패스워드가 틀렸을 때
+                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
+                }
+            }
+    }
     fun firebaseAuthWithGoogle(idToken: String){
         var credential = GoogleAuthProvider.getCredential(idToken,null)
         auth?.signInWithCredential(credential)
