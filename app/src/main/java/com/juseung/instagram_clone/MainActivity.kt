@@ -1,16 +1,18 @@
 package com.juseung.instagram_clone
 
+import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.juseung.instagram_clone.databinding.ActivityMainBinding
-import navigation.AlarmFragment
-import navigation.DetailViewFragment
-import navigation.GridFragment
-import navigation.UserFragment
+import navigation.*
+import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private lateinit var binding: ActivityMainBinding
@@ -21,6 +23,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
+
         binding.bottomNavigation.run {
             setOnItemSelectedListener { item ->
                 when(item.itemId) {
@@ -35,6 +39,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         true
                     }
                     R.id.action_photo -> {
+                        if (ContextCompat.checkSelfPermission(this@MainActivity,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                            startActivity(Intent(this@MainActivity,AddPhotoActivity::class.java))
                         true
                     }
                     R.id.action_favorite_alarm -> {
@@ -50,8 +56,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 true
             }
-            selectedItemId = R.id.action_search
+            selectedItemId = R.id.action_home
         }
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
